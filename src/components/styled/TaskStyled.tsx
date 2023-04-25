@@ -45,22 +45,27 @@ export const StyledTaskList = styled.ul`
 
   li {
     width: 100%;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     height: 40px;
     line-height: 40px;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #8e8e8e;
   }
   span.task {
     input[type="checkbox"] {
+      margin-left: 0.5rem;
       margin-right: 0.5rem;
+      cursor: pointer;
     }
   }
   button {
     font-weight: bold;
     background: transparent;
     text-decoration: none;
+    margin-right: 0.5rem;
   }
   .completed {
     background: #dcffc7;

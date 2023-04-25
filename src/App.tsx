@@ -10,10 +10,17 @@ import {
   StyledSection,
 } from "./components/styled/TaskStyled";
 
+enum Tabs {
+  ACTIVE = "active",
+  COMPLETED = "completed",
+  ALL = "all",
+}
+
 function App() {
   const [active, showActive] = useState<boolean>(true);
   const [completed, showCompleted] = useState<boolean>(true);
   const [tasks, saveTasks] = useStorage();
+  const [activeTab, setActiveTab] = useState<string>("all");
 
   const taskRef = useRef<HTMLInputElement>(null);
 
@@ -65,6 +72,7 @@ function App() {
       <Container>
         <StyledForm onSubmit={handleSubmit}>
           <input
+            id="task"
             ref={taskRef}
             name="task"
             type="text"
@@ -118,27 +126,40 @@ function App() {
               onClick={() => {
                 showActive(true);
                 showCompleted(true);
+                setActiveTab("all");
               }}
             >
-              All
+              <span className={`${activeTab === Tabs.ALL ? `highlight` : ``}`}>
+                All
+              </span>
             </button>{" "}
             |{" "}
             <button
               onClick={() => {
                 showActive(true);
                 showCompleted(false);
+                setActiveTab("active");
               }}
             >
-              Active
+              <span
+                className={`${activeTab === Tabs.ACTIVE ? `highlight` : ``}`}
+              >
+                Active
+              </span>
             </button>{" "}
             |{" "}
             <button
               onClick={() => {
                 showCompleted(true);
                 showActive(false);
+                setActiveTab("completed");
               }}
             >
-              Completed
+              <span
+                className={`${activeTab === Tabs.COMPLETED ? `highlight` : ``}`}
+              >
+                Completed
+              </span>
             </button>{" "}
           </p>
         </FooterStyled>
