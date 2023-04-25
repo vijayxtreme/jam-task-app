@@ -1,6 +1,14 @@
 import React, { useState, useRef } from "react";
 import { useStorage } from "./hooks/useStorage";
 import "./App.css";
+import TaskItem from "./components/TaskItem";
+import { JumboStyled } from "./components/styled/JumboStyled";
+import { Container, FooterStyled } from "./components/styled/Container";
+import {
+  StyledForm,
+  StyledTaskList,
+  StyledSection,
+} from "./components/styled/TaskStyled";
 
 function App() {
   const [active, showActive] = useState<boolean>(true);
@@ -51,107 +59,90 @@ function App() {
 
   return (
     <div className="app">
-      <section>
+      <JumboStyled>
         <h1>What Do You Want To Do?</h1>
-        <form onSubmit={handleSubmit}>
+      </JumboStyled>
+      <Container>
+        <StyledForm onSubmit={handleSubmit}>
           <input
             ref={taskRef}
             name="task"
             type="text"
-            placeholder="Enter in your task"
+            placeholder="Enter a task"
           />
-        </form>
-      </section>
-      {active && (
-        <section className="active-tasks">
-          {/** Default View */}
-          <h2>Your Active Tasks</h2>
-          <ul>
-            {tasks &&
-              tasks
-                .filter((task) => !task.done)
-                .map((task) => {
-                  return (
-                    <li key={task.id}>
-                      <input
-                        type="checkbox"
-                        onChange={completeTask}
-                        checked={task.done}
-                        data-id={task.id?.toString()}
+        </StyledForm>
+        {active && (
+          <StyledSection className="active-tasks">
+            <h2>Active</h2>
+            <StyledTaskList>
+              {tasks &&
+                tasks
+                  .filter((task) => !task.done)
+                  .map((task) => {
+                    return (
+                      <TaskItem
+                        className="active"
+                        key={task.id}
+                        task={task}
+                        completeTask={completeTask}
+                        deleteTask={deleteTask}
                       />
-
-                      <span>{task.message}</span>
-                      {` | `}
-                      <button
-                        data-id={task.id?.toString()}
-                        onClick={deleteTask}
-                      >
-                        x
-                      </button>
-                    </li>
+                    );
+                  })}
+            </StyledTaskList>
+          </StyledSection>
+        )}
+        {completed && (
+          <StyledSection className="completed-tasks">
+            <h2>Completed</h2>
+            <StyledTaskList>
+              {tasks
+                .filter((task) => task.done)
+                .map((task, index) => {
+                  return (
+                    <TaskItem
+                      className="completed"
+                      key={task.id}
+                      task={task}
+                      completeTask={completeTask}
+                      deleteTask={deleteTask}
+                    />
                   );
                 })}
-          </ul>
-        </section>
-      )}
-      {completed && (
-        <section className="completed-tasks">
-          <h2>Your Completed Tasks</h2>
-          <ul>
-            {tasks
-              .filter((task) => task.done)
-              .map((task, index) => {
-                return (
-                  <li className={`completed`} key={task.id}>
-                    <input
-                      onChange={completeTask}
-                      type="checkbox"
-                      checked={task.done}
-                      data-id={task.id.toString()}
-                    />
-                    <span>{task.message}</span>
-                    {` | `}
-                    <button data-id={task.id?.toString()} onClick={deleteTask}>
-                      x
-                    </button>
-                  </li>
-                );
-              })}
-          </ul>
-        </section>
-      )}
-      <footer>
-        <p>
-          Show{" "}
-          <button
-            onClick={() => {
-              showActive(true);
-              showCompleted(true);
-            }}
-          >
-            All
-          </button>{" "}
-          |{" "}
-          <button
-            onClick={() => {
-              showActive(true);
-              showCompleted(false);
-            }}
-          >
-            Active
-          </button>{" "}
-          |{" "}
-          <button
-            onClick={() => {
-              showCompleted(true);
-              showActive(false);
-            }}
-          >
-            Completed
-          </button>{" "}
-          Tasks
-        </p>
-      </footer>
+            </StyledTaskList>
+          </StyledSection>
+        )}
+        <FooterStyled>
+          <p>
+            <button
+              onClick={() => {
+                showActive(true);
+                showCompleted(true);
+              }}
+            >
+              All
+            </button>{" "}
+            |{" "}
+            <button
+              onClick={() => {
+                showActive(true);
+                showCompleted(false);
+              }}
+            >
+              Active
+            </button>{" "}
+            |{" "}
+            <button
+              onClick={() => {
+                showCompleted(true);
+                showActive(false);
+              }}
+            >
+              Completed
+            </button>{" "}
+          </p>
+        </FooterStyled>
+      </Container>
     </div>
   );
 }
