@@ -2,7 +2,7 @@
 
 Instructions:
 
-Make sure to Git Clone the repo, then after changing directories to the folder `cd taskapp`:
+Make sure to Git Clone the repo, then `cd jam-task-app`:
 
 `npm i` to install dependencies
 
